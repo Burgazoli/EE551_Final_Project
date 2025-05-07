@@ -103,11 +103,11 @@ class BlackjackGame:
         print("Invalid input, please enter 'h' or 's'.")
 
   def dealer_turn(self):
-    print(self.dealer.show_hand(reveal_dealer=False))
+    print(self.dealer.show_hand(hide_first_card=False))
     while self.dealer.hand.get_value() < 17:
       print("Dealer hits.")
       self.dealer.hit(self.deck)
-      print(self.dealer.show_hand(reveal_dealer=True))
+      print(self.dealer.show_hand(hide_first_card=False))
     if self.dealer.hand.get_value() >= 17:
       print("Dealer stands.")
 
