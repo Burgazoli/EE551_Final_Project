@@ -66,7 +66,7 @@ class Player:
     return f"{self.name}'s hand: {self.hand} (Value: {self.hand.get_value()})"
 
 #Dealer class
-class Dealer(Player):
+class Dealer(Dealer):
   def show_hand(self, hide_first_card=True):
     if hide_first_card:
       return f"{self.name}'s hand: [Hidden], " + ', '.join(str(card) for card in self.hand.cards[1:])
@@ -103,7 +103,7 @@ class BlackjackGame:
         print("Invalid input, please enter 'h' or 's'.")
 
   def dealer_turn(self):
-    print(self.dealer.show_hand(reveal_dealer=True))
+    print(self.dealer.show_hand(reveal_dealer=False))
     while self.dealer.hand.get_value() < 17:
       print("Dealer hits.")
       self.dealer.hit(self.deck)
