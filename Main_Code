@@ -82,10 +82,8 @@ class BlackjackGame:
 
   def initial_deal(self):
     for _ in range(2):
-
-self.player.hit(self.deck)
-
-self.dealer.hit(self.deck)
+      self.player.hit(self.deck)
+      self.dealer.hit(self.deck)
 
   def show_hands(self, reveal_dealer=False):
 print(self.player.show_hand())
