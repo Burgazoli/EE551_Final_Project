@@ -1,138 +1,144 @@
 import random
 
 class Card:
-suits = ["Clubs", "Diamonds", "Hearts", "Spades"]
-ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
+  suits = ["Clubs", "Diamonds", "Hearts", "Spades"]
+  ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
 
-def init(self, suit, rank):
-self.suit = suit
-self.rank = rank
+    def __init__(self, suit, rank):
+      self.suit = suit
+      self.rank = rank
 
-def repr(self):
-return f"{self.rank} of {self.suit}"
+    def __repr__(self):
+      return f"{self.rank} of {self.suit}"
 
-Deck class to handle multiple cards
+#Deck class to handle multiple cards
 class Deck:
-def init(self):
-self.cards = [Card(suit, rank) for suit in Card.suits for rank in Card.ranks]
-self.shuffle()
+  def __init__(self):
+    self.cards = [Card(suit, rank) for suit in Card.suits for rank in Card.ranks]
+    self.shuffle()
 
-def shuffle(self):
-random.shuffle(self.cards)
+  def shuffle(self):
+    random.shuffle(self.cards)
 
-def deal_card(self):
-return self.cards.pop()
+  def deal_card(self):
+    return self.cards.pop()
 
-Hand class to manage cards held by player or dealer
+#Hand class to manage cards held by player or dealer
 class Hand:
-def init(self):
-self.cards = []
+  def __init__(self):
+    self.cards = []
 
-def add_card(self, card):
-self.cards.append(card)
+  def add_card(self, card):
+    self.cards.append(card)
 
-def get_value(self):
-value = 0
-aces = 0
-for card in self.cards:
-if card.rank in ["J", "Q", "K"]:
-value += 10
-elif card.rank == "A":
-aces += 1
-value += 11
-else:
-value += int(card.rank)
-Adjust for aces
-while value > 21 and aces:
-value -= 10
-aces -= 1
-return value
+  def get_value(self):
+    value = 0
+    aces = 0
+    for card in self.cards:
+      if card.rank in ["J", "Q", "K"]:
+        value += 10
+      elif card.rank == "A":
+        aces += 1
+        value += 11
+      else:
+        value += int(card.rank)
+#Adjust for aces
+    while value > 21 and aces:
+      value -= 10
+      aces -= 1
+    return value
 
-def str(self):
-return ', '.join(str(card) for card in self.cards)
+  def __str__(self):
+    return ', '.join(str(card) for card in self.cards)
 
-Player class
+#Player class
 class Player:
-def init(self, name="Player"):
-self.name = name
-self.hand = Hand()
+  def __init__(self, name="Player"):
+    self.name = name
+    self.hand = Hand()
 
-def hit(self, deck):
-card = deck.deal_card()
-self.hand.add_card(card)
-return card
+  def hit(self, deck):
+    card = deck.deal_card()
+    self.hand.add_card(card)
+    return card
 
-def show_hand(self):
-return f"{self.name}'s hand: {self.hand} (Value: {self.hand.get_value()})"
+  def show_hand(self):
+    return f"{self.name}'s hand: {self.hand} (Value: {self.hand.get_value()})"
 
-Dealer class
+#Dealer class
 class Dealer(Player):
-def show_hand(self, hide_first_card=True):
-if hide_first_card:
-return f"{self.name}'s hand: [Hidden], " + ', '.join(str(card) for card in self.hand.cards[1:])
-else:
-return super().show_hand()
+  def show_hand(self, hide_first_card=True):
+    if hide_first_card:
+      return f"{self.name}'s hand: [Hidden], " + ', '.join(str(card) for card in self.hand.cards[1:])
+    else:
+      return super().show_hand()
 
-Main game class
+#Main game class
 class BlackjackGame:
-def init(self):
-self.deck = Deck()
-self.player = Player()
-self.dealer = Dealer()
+  def __init__(self):
+    self.deck = Deck()
+    self.player = Player()
+    self.dealer = Dealer()
 
-def initial_deal(self):
-for _ in range(2):
+  def initial_deal(self):
+    for _ in range(2):
+
 self.player.hit(self.deck)
+
 self.dealer.hit(self.deck)
 
-def show_hands(self, reveal_dealer=False):
+  def show_hands(self, reveal_dealer=False):
 print(self.player.show_hand())
-print(self.dealer.show_hand(hide_first_card=not reveal_dealer))
+    print(self.dealer.show_hand(hide_first_card=not reveal_dealer))
 
-def player_turn(self):
-while True:
+  def player_turn(self):
+    while True:
 print(self.player.show_hand())
-if self.player.hand.get_value() >= 21:
-break
-choice = input("Hit or Stand? (h/s): ").lower()
-if choice == 'h':
+      if self.player.hand.get_value() >= 21:
+        break
+      choice = input("Hit or Stand? (h/s): ").lower()
+      if choice == 'h':
 self.player.hit(self.deck)
-elif choice == 's':
-break
-else:
-print("Invalid input, please enter 'h' or 's'.")
+      elif choice == 's':
+        break
+      else:
+        print("Invalid input, please enter 'h' or 's'.")
 
-def dealer_turn(self):
-print(self.dealer.show_hand(reveal_dealer=True))
-while self.dealer.hand.get_value() = 17:
-print("Dealer stands.")
+  def dealer_turn(self):
+    print(self.dealer.show_hand(reveal_dealer=True))
+    while self.dealer.hand.get_value() < 17:
+      print("Dealer hits.")
+self.dealer.hit(self.deck)
+      print(self.dealer.show_hand(reveal_dealer=True))
+    if self.dealer.hand.get_value() >= 17:
+      print("Dealer stands.")
 
-def check_winner(self):
-player_value = self.player.hand.get_value()
-dealer_value = self.dealer.hand.get_value()
+  def check_winner(self):
+    player_value = self.player.hand.get_value()
+    dealer_value = self.dealer.hand.get_value()
 
-if player_value > 21:
-return "Player busts! Dealer wins."
-elif dealer_value > 21:
-return "Dealer busts! Player wins."
-elif player_value > dealer_value:
-return "Player wins!"
-elif dealer_value > player_value:
-return "Dealer wins!"
-else:
-return "It's a tie!"
+    if player_value > 21:
+      return "Player busts! Dealer wins."
+    elif dealer_value > 21:
+      return "Dealer busts! Player wins."
+    elif player_value > dealer_value:
+      return "Player wins!"
+    elif dealer_value > player_value:
+      return "Dealer wins!"
+    else:
+      return "It's a tie!"
 
-def play(self):
-self.initial_deal()
-self.show_hands()
-self.player_turn()
+  def play(self):
+    self.initial_deal()
+    self.show_hands()
+    self.player_turn()
 
-if self.player.hand.get_value() <= 21:
-self.dealer_turn()
+    if self.player.hand.get_value() <= 21:
+      self.dealer_turn()
 
-print(self.check_winner())
+    print(self.check_winner())
 
-Run the game
-if name == "main":
-game = BlackjackGame()
-game.play()
+#Run the game
+if __name__ == "__main__":
+  game = BlackjackGame()
+  game.play()
