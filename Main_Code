@@ -86,17 +86,17 @@ class BlackjackGame:
       self.dealer.hit(self.deck)
 
   def show_hands(self, reveal_dealer=False):
-print(self.player.show_hand())
+    print(self.player.show_hand())
     print(self.dealer.show_hand(hide_first_card=not reveal_dealer))
 
   def player_turn(self):
     while True:
-print(self.player.show_hand())
+    print(self.player.show_hand())
       if self.player.hand.get_value() >= 21:
         break
       choice = input("Hit or Stand? (h/s): ").lower()
       if choice == 'h':
-self.player.hit(self.deck)
+      self.player.hit(self.deck)
       elif choice == 's':
         break
       else:
@@ -106,7 +106,7 @@ self.player.hit(self.deck)
     print(self.dealer.show_hand(reveal_dealer=True))
     while self.dealer.hand.get_value() < 17:
       print("Dealer hits.")
-self.dealer.hit(self.deck)
+      self.dealer.hit(self.deck)
       print(self.dealer.show_hand(reveal_dealer=True))
     if self.dealer.hand.get_value() >= 17:
       print("Dealer stands.")
