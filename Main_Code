@@ -91,12 +91,12 @@ class BlackjackGame:
 
   def player_turn(self):
     while True:
-    print(self.player.show_hand())
+      print(self.player.show_hand())
       if self.player.hand.get_value() >= 21:
         break
       choice = input("Hit or Stand? (h/s): ").lower()
       if choice == 'h':
-      self.player.hit(self.deck)
+        self.player.hit(self.deck)
       elif choice == 's':
         break
       else:
